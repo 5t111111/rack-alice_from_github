@@ -1,8 +1,24 @@
+require 'webmock'
+
+include WebMock::API
+
+# Stubbing external request for GitHub authentization via WebMock
+stub_request(:post, 'https://github.com/login/oauth/access_token')
+.to_return(body: 'access_token=charleslutwidgedodgson&scope=user%2Cgist&token_type=bearer',
+           headers: { 'content-type' => 'application/x-www-form-urlencoded' })
+
+stub_request(:get, 'https://api.github.com/user')
+.to_return(body:'{"id":42,"email":"alice@example.com"}',
+           headers: { 'content-type' => 'application/json' })
+
+WebMock.enable!
+WebMock.allow_net_connect!
+
 module Rack
   module AliceFromGithub
     # Stubbing logging-in via GitHub OAuth for Sorcery external
     # https://github.com/NoamB/sorcery/wiki/External
-    # Requires a user named 'Alice'
+    # Requires a user has an associtation with authentications(uid: 42)
     class SorceryGithubExternalMock
       def initialize(app)
         @app = app
@@ -10,17 +26,11 @@ module Rack
 
       def call(env)
         if env['PATH_INFO'] =~ %r{\A.*oauth/github/?\z}
-          return [301, { 'Location' => '/oauth/callback' }, []]
+          return [301, { 'Location' => '/oauth/callback?provider=github' }, []]
         end
-
-        if env['PATH_INFO'] =~ %r{\A.*/oauth/callback/?\z}
-          req = Rack::Request.new(env)
-          req.session[:user_id] = User.find_by(name: 'Alice').id.to_s
-          return [301, { 'Location' => '/' }, []]
-        end
-
         @app.call(env)
       end
     end
   end
 end
+
