@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rack/alice_from_github/version'
+require 'rack/alice_in_external/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "rack-alice_from_github"
-  spec.version       = Rack::AliceFromGithub::VERSION
+  spec.name          = "rack-alice_in_external"
+  spec.version       = Rack::AliceInExternal::VERSION
   spec.authors       = ["Hirofumi Wakasugi"]
   spec.email         = ["baenej@gmail.com"]
 
-  spec.summary       = %q{Rough and dirty stubbing logging-in via GitHub OAuth for Sorcery external}
-  spec.description   = %q{Rough and dirty stubbing logging-in via GitHub OAuth for Sorcery external}
-  spec.homepage      = "https://github.com/5t111111/rack-alice_from_github"
+  spec.summary       = %q{Rough and dirty stubbing for authentication via Sorcery external}
+  spec.description   = %q{Rough and dirty stubbing for authentication via Sorcery external (GitHub only for the moment)}
+  spec.homepage      = "https://github.com/5t111111/rack-alice_in_external"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
