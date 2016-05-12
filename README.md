@@ -48,7 +48,7 @@ gem 'rack-alice_in_external'
 
 ## Usage
 
-Rack::AliceInExternal tries to find the user who has an association with `uid: 42` in `authentications` table, so you have to create that user and the authentication associated to her (and you cannot change `uid` other than `42`) .
+Rack::AliceInExternal stubs the external requests and returns the user information as a response which includes `uid: 42`. So if the user with an association to the `uid: 42` record in `authentications` table exists, Sorcery makes that user login, otherwise a new user is created (and you cannot change `uid` other than `42`).
 
 Fixture examples:
 
